@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica de Subgéneros Literarios</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .game-area {
+            padding: 40px;
+        }
+        
+        .text-box {
+            background: #f8f9fa;
+            border: 3px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .text-box h3 {
+            color: #495057;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .option-btn {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.3);
+            text-align: center;
+        }
+        
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(116, 185, 255, 0.4);
+        }
+        
+        .option-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .message {
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2em;
+            display: none;
+        }
+        
+        .success {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+        }
+        
+        .error {
+            background: linear-gradient(45deg, #e17055, #d63031);
+            color: white;
+            box-shadow: 0 5px 15px rgba(225, 112, 85, 0.3);
+        }
+        
+        .explanation-box {
+            background: linear-gradient(45deg, #a8e6cf, #88d8a3);
+            border: 3px solid #4ecdc4;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #2d3436;
+            font-weight: bold;
+            line-height: 1.5;
+            display: none;
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+        }
+        
+        .explanation-box h4 {
+            margin: 0 0 10px 0;
+            color: #00b894;
+            font-size: 1.2em;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .score {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        
+        .control-btn {
+            background: linear-gradient(45deg, #fd79a8, #e84393);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(253, 121, 168, 0.3);
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(253, 121, 168, 0.4);
+        }
+        
+        .next-btn {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            display: none;
+        }
+        
+        .phase-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #636e72;
+            font-weight: bold;
+        }
+    </style>
+<style type="text/css">
+.grande { font-size: 60px; }
+</style>
+<script>
+// Escribir aqui el código Javascript
+</script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎭 Subgéneros Literarios 📚</h1>
+            <p>¡Demuestra tu conocimiento literario!</p>
+        </div>
+        
+        <div class="game-area">
+            <div class="phase-indicator">
+                Fase <span id="currentPhase">1</span> de <span id="totalPhases">21</span>
+            </div>
+            
+            <div class="text-box">
+                <h3>📖 Lee el siguiente texto:</h3>
+                <div id="textContent"></div>
+            </div>
+            
+            <div class="options-container" id="optionsContainer">
+                <!-- Las opciones se generarán dinámicamente -->
+            </div>
+            
+            <div id="message" class="message"></div>
+            
+            <div id="explanationBox" class="explanation-box">
+                <div id="explanationContent"></div>
+            </div>
+            
+            <div class="controls">
+                <div class="score">
+                    Puntuación: <span id="score">0</span> puntos
+                </div>
+                <div>
+                    <button class="control-btn next-btn" id="nextBtn" onclick="nextPhase()">
+                        Siguiente Fase ➡️
+                    </button>
+                    <button class="control-btn" onclick="newGame()">
+                        Nueva Partida 🔄
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const genreExplanations = {
+            "Novela": "📖 NOVELA: Narración extensa en prosa que presenta múltiples personajes, tramas complejas y desarrollo psicológico profundo. Características: • Extensión considerable • Múltiples personajes y subtramas • Desarrollo temporal amplio • Análisis psicológico detallado • Descripción minuciosa de ambientes",
+            "Cuento": "📝 CUENTO: Narración breve en prosa con un solo conflicto central y desenlace rápido. Características: • Brevedad y concisión • Un solo conflicto principal • Pocos personajes • Unidad de tiempo, lugar y acción • Desenlace sorpresivo o impactante",
+            "Fábula": "🦊 FÁBULA: Narración breve con animales personificados que enseña una lección moral. Características: • Personajes animales con cualidades humanas • Finalidad didáctica explícita • Moraleja al final • Lenguaje sencillo • Enseñanza de valores universales",
+            "Leyenda": "🌟 LEYENDA: Relato tradicional que mezcla elementos reales e imaginarios sobre lugares o personajes. Características: • Base histórica o geográfica real • Elementos fantásticos o sobrenaturales • Transmisión oral popular • Explicación de fenómenos naturales • Arraigo cultural local",
+            "Mito": "⚡ MITO: Relato sagrado que explica el origen del mundo, dioses y fenómenos naturales. Características: • Personajes divinos o sobrenaturales • Explicación de orígenes cósmicos • Carácter sagrado y ritual • Simbolismo profundo • Función explicativa del universo",
+            "Epopeya": "⚔️ EPOPEYA: Poema narrativo extenso que relata hazañas heroicas de importancia nacional. Características: • Héroe de dimensiones extraordinarias • Hazañas de interés colectivo • Intervención de dioses • Verso épico • Exaltación de valores nacionales",
+            "Cantar de Gesta": "🏰 CANTAR DE GESTA: Poema épico medieval que narra las hazañas de un héroe histórico. Características: • Héroe histórico real • Verso irregular • Transmisión oral por juglares • Exaltación de virtudes caballerescas • Ambiente medieval",
+            "Canción": "🎵 CANCIÓN: Composición lírica de tema amoroso con estructura musical. Características: • Tema amoroso predominante • Estructura estrófica regular • Ritmo musical marcado • Expresión de sentimientos íntimos • Lenguaje melódico",
+            "Oda": "🌟 ODA: Composición lírica que exalta o elogia a una persona, objeto o concepto. Características: • Tono elevado y solemne • Exaltación o alabanza • Lenguaje culto y elaborado • Estructura estrófica compleja • Tema noble o trascendente",
+            "Elegía": "😢 ELEGÍA: Composición lírica que expresa dolor, melancolía o lamento. Características: • Tono melancólico y doliente • Tema de pérdida o muerte • Expresión de sentimientos tristes • Reflexión sobre la fugacidad • Lenguaje emotivo",
+            "Sátira": "😏 SÁTIRA: Composición que critica vicios o defectos con intención moralizadora. Características: • Crítica de costumbres o vicios • Tono burlesco o irónico • Intención moralizadora • Uso del humor y la ironía • Denuncia social",
+            "Égloga": "🐑 ÉGLOGA: Composición lírica de tema pastoril con diálogos entre pastores. Características: • Ambiente bucólico idealizado • Personajes pastores • Tema amoroso en la naturaleza • Diálogo entre personajes • Idealización de la vida rural",
+            "Soneto": "📜 SONETO: Composición poética de 14 versos endecasílabos con rima consonante. Características: • 14 versos endecasílabos • Dos cuartetos y dos tercetos • Rima consonante • Tema único desarrollado • Estructura fija y rigurosa",
+            "Tragedia": "🎭 TRAGEDIA: Obra teatral de final desgraciado con personajes nobles. Características: • Final catastrófico • Personajes de alta condición social • Tema serio y elevado • Despertar de compasión y terror • Purificación emocional (catarsis)",
+            "Comedia": "😄 COMEDIA: Obra teatral de carácter alegre con final feliz. Características: • Final feliz • Personajes de clase media o baja • Situaciones divertidas • Crítica de costumbres • Provocar risa en el público",
+            "Drama": "🎪 DRAMA: Obra teatral que mezcla elementos trágicos y cómicos. Características: • Mezcla de lo trágico y lo cómico • Personajes de diversa condición • Lenguaje variado • Temas de la vida cotidiana • Reflejo de la realidad social",
+            "Auto Sacramental": "⛪ AUTO SACRAMENTAL: Obra teatral alegórica de tema religioso. Características: • Tema religioso (Eucaristía) • Personajes alegóricos • Finalidad didáctica religiosa • Un solo acto • Representación en Corpus Christi",
+            "Entremés": "🤡 ENTREMÉS: Pieza teatral breve y cómica representada entre actos. Características: • Brevedad extrema • Carácter cómico • Personajes populares • Lenguaje coloquial • Situaciones cotidianas divertidas",
+            "Ensayo": "💭 ENSAYO: Texto reflexivo que expone ideas personales sobre un tema. Características: • Reflexión personal del autor • Tema libre • Prosa didáctica • Subjetividad • Finalidad persuasiva o reflexiva",
+            "Biografía": "👤 BIOGRAFÍA: Narración de la vida de una persona real. Características: • Personaje histórico real • Narración cronológica • Datos verificables • Enfoque objetivo • Documentación histórica",
+            "Epístola": "✉️ EPÍSTOLA: Composición en forma de carta con contenido moral o didáctico. Características: • Forma epistolar • Contenido didáctico o moral • Tono personal e íntimo • Destinatario específico • Finalidad educativa"
+        };
+
+        const texts = [
+            {
+                content: "La mañana en que el Coronel Aureliano Buendía despertó, supo que el pasado, por fin, había regresado a cobrar las deudas que su tatarabuelo había contraído con el tiempo. El reloj de la sala, que su esposa, Úrsula, conservaba con manía religiosa, se había detenido exactamente a la hora de su nacimiento. Mientras preparaba el café, la radio anunció que en la capital, el joven y ambicioso Senador Vargas, un viejo amigo de la infancia del Coronel, había sido acusado de malversación, desatando una crisis política que amenazaba con arrastrar no solo a la familia Buendía, sino a toda la nación. Paralelamente, su nieta, la joven y solitaria Remedios, recibía una misteriosa carta perfumada de un remitente anónimo, la cual contenía una antigua llave de plata que no abría ninguna puerta conocida en la hacienda familiar.",
+                correct: "Novela"
+            },
+            {
+                content: "El tren de las 3:15 se detuvo con un silbido seco en una estación olvidada. Solo un pasajero descendió: un hombre de gabardina gris que no llevaba equipaje. Se dirigió al único banco de la plataforma, donde le esperaba un pequeño paquete envuelto en papel de estraza. Sin abrirlo, sin mirar a su alrededor, el hombre se limitó a deslizarlo bajo el banco y luego regresó al vagón justo cuando el revisor daba la orden de partida. Unos segundos después, el tren reanudó su marcha dejando tras de sí el silencio y el paquete. Nadie se percató del objeto hasta que, una hora más tarde, el único habitante del pueblo, un viejo llamado Pedro, fue a recoger el periódico y encontró el envoltorio. La trama, simple y rápida, culminó con un desenlace abrupto: al tocar el papel, sintió un frío metálico y comprendió, con una punzada en el pecho, que contenía un arma.",
+                correct: "Cuento"
+            },
+            {
+                content: "Un Zorro astuto y hambriento observaba a una Cigüeña pescando tranquilamente en el río. El Zorro, cansado de su dieta de bayas, decidió tenderle una trampa. Se acercó con gran amabilidad y la invitó a un festín de sopa que serviría en un plato plano. Al día siguiente, la Cigüeña, con su largo pico, no pudo probar bocado, mientras que el Zorro se relamía con facilidad. Días después, la Cigüeña invitó al Zorro a cenar, sirviendo la comida en una jarra alta y estrecha. Ella bebió con gusto, mientras el Zorro, con su hocico ancho, solo pudo lamer el borde. Moraleja: No hagas a otros lo que no quieres que te hagan a ti, pues la ofensa será devuelta con la misma medida.",
+                correct: "Fábula"
+            },
+            {
+                content: "Se dice que en las orillas del lago Titikaka, en las noches de luna nueva, aparece la figura neblinosa de una mujer vestida con ropajes ancestrales. Ella es Mama Qucha, y su historia se remonta a los tiempos de la fundación del Imperio Inca. No es una diosa, sino el espíritu de una joven princesa que, al ver a su pueblo asediado por una plaga de sequía, imploró a los Apus (los dioses de las montañas) que se sacrificaran por su gente. Su sacrificio fue tan grande que las lágrimas de dolor que derramó formaron el lago. La gente del lugar asegura que su aparición predice tanto las grandes cosechas como las inundaciones devastadoras, y es por eso que siempre le dejan ofrendas de hojas de coca para aplacar su pena y garantizar la protección.",
+                correct: "Leyenda"
+            },
+            {
+                content: "Al principio solo existía el vasto y caótico abismo, hasta que la Diosa Primordial, Gea, despertó de su profundo sueño. De su vientre surgieron las montañas y los mares. Sin necesidad de unión, Gea engendró a Urano, el cielo estrellado, quien luego se unió a ella. De esta unión nacieron los Titanes, seres de poder inmenso. El más joven y temible de ellos, Crono, celoso del poder de su padre, urdió un plan para derrocarlo, estableciendo así el primer linaje de dioses y héroes que explicaría el origen de la luz, el tiempo y la civilización.",
+                correct: "Mito"
+            },
+            {
+                content: "Odiseo, el más astuto de los héroes, llevaba diez años errando por el mar después de la caída de Troya. Las aguas, enfurecidas por el Dios Poseidón a quien el héroe había osado ofender, escupían sus naves contra las costas de islas habitadas por seres monstruosos. En su travesía, derrotó a cíclopes con fuerza bruta e ingenio, resistió el canto letal de las Sirenas que prometían la sabiduría, y descendió a los reinos de Hades para consultar a los muertos sobre su destino. Su viaje, una lucha épica contra fuerzas divinas y naturales, era la prueba definitiva de su valor, todo en el desesperado intento de regresar a Ítaca, donde su esposa Penélope resistía el asedio de cien pretendientes.",
+                correct: "Epopeya"
+            },
+            {
+                content: "El Cid Campeador, desterrado por la falsa acusación de sus enemigos, cabalgaba al frente de cien caballeros leales, jurando por Dios y por Castilla recuperar el honor perdido. \"¡Hoy desenvainaremos las espadas por el Rey, aunque el Rey nos haya desterrado!\" clamó a sus hombres, su voz resonando en el campo. Cada victoria contra los moros era un verso cantado por los juglares, que relataban el brillo de su espada Tizona y la lealtad inquebrantable de su yegua Babieca. La narración, en verso, se centraba en su valor militar y en su cristiana fe, logrando que el pueblo glorificara sus hazañas como ejemplo de la virtud castellana.",
+                correct: "Cantar de Gesta"
+            },
+            {
+                content: `Siento el reloj detenido
+desde aquella tarde de abril,
+en que te fuiste, mar de añil,
+y mi alma se ha roto en el olvido.
+
+Mi corazón es música rota,
+repitiendo un estribillo sin voz;
+el mundo es gris, sin tu arrebol,
+y el aire que respiro no me flota.
+
+Vuelve a tejer la luz de tus sonrisas,
+que sin ti el sol es solo un mal color.
+Regresa y calma este vivo dolor,
+antes que el tiempo borre las divisas.`,
+                correct: "Canción"
+            },
+            {
+                content: `¡Oh, Libro Inmemorial!, custodio de las almas,
+en tu lomo reposa el pensar verdadero,
+que los siglos ocultos, sin voz ni sendero,
+en tinta y papel hallan paz en las calmas.
+
+Te exalto, faro firme de la razón entera,
+que guía al espíritu y rompe la ignorancia.
+Tu humilde cubierta es de alta importancia,
+al contener la luz que al hombre libera.
+
+¡Gloria a tu cubierta!, sagrado tesoro,
+eres joya del tiempo, eres noble cultura;
+en tu ser de silencio, no hay desventura,
+pues guardas el saber más valioso que el oro.`,
+                correct: "Oda"
+            },
+            {
+                content: `El viento frío azota el ciprés con pena honda,
+y el sol no vuelve ya a calentar mis días;
+la tierra te ha acogido en sus sendas frías,
+y tu adiós en mi alma cual daga se esconda.
+
+Lloro tu nombre, hermano, lamento sin fin,
+la risa se ha fugado de todo recuerdo.
+¿En qué lugar hallaré, sin tu voz, mi cuerdo
+camino, deshecho entre el mármol y el jazmín?
+
+¡Profunda pena!, que al pecho se anida,
+por tu temprana partida, tu breve vivir.
+Solo queda el vacío, el dolor y el gemir,
+la sombra de la estirpe, de fe desvalida.`,
+                correct: "Elegía"
+            },
+            {
+                content: `¡Cuán graciosos sois, señores políticos de cuna!
+Con promesas huecas, adornáis vuestra gala,
+lleváis el discurso con seda y con fala,
+mientras el bolsillo goza de la fortuna.
+
+Decís buscar la luz, mas os movéis sin luna,
+y vuestra honestidad, cual sueño se exhala;
+el pueblo os observa con mofa que escala,
+pues sois tan creíbles como un billete de una.
+
+Hipócrita burla del que clama pobreza,
+mientras viaja en carro y viste de linaje.
+¡Seguid en la sombra, con vuestro ropaje!,
+que la risa irónica es vuestra vileza.`,
+                correct: "Sátira"
+            },
+            {
+                content: `Bajo el olivo dulce, que da sombra y abrigo,
+reposa Filis bella, de blanco vellocino;
+el arroyo murmura un canto cristalino,
+mientras Amintas tañe, por único testigo.
+
+Ella teje guirnaldas de flor y de consigo,
+mientras él le dedica el verso más divino;
+su amor es la esencia del valle y el camino,
+que los cubre de paz, sin llanto ni castigo.
+
+La cabaña de hiedra, gentil y retirada,
+es el fin del sosiego y la naturaleza;
+aquí solo existe pastoril nobleza,
+y la promesa eterna de un alma enamorada.`,
+                correct: "Égloga"
+            },
+            {
+                content: `El tiempo que sin tregua nos consume,
+cual río caudaloso que no cesa,
+detiene su carrera, con gran destreza,
+al ver el arte que en el alma asume.
+
+La forma firme al verso le presume
+ser catorce verdades sin pereza,
+y el pensamiento en sí de tal alteza,
+que el hondo corazón lo re-resume.
+
+Mas llega el fin con nueva rima y calma,
+donde el tema se sella, endecasílabo y fuerte,
+y alza el arte con noble y fausto pleno,
+el eco de la voz que en el poema acalma.`,
+                correct: "Soneto"
+            },
+            {
+                content: "(Oscuro. Un único foco ilumina a CREONTE, con la toga desgarrada, frente a un altar de piedra. Su voz es ronca por el llanto.)\nCREONTE\n¡Oh, destino inevitable, ¿por qué te cebaste\ncon mi noble estirpe y con mi alma impía?\nMi hijo y mi esposa, en esta noche fría,\nhallaron la muerte por la ley que dictaste!\nEl oráculo se cumple, aunque mi lucha fue en vano.\nIntenté ser justo, mas solo fui verdugo.\nLlevo ahora el peso de un fatídico yugo,\nsabiendo que el error fue de mi propia mano.\n(CREONTE cae de rodillas, batiendo el puño contra el suelo. El telón cae lentamente, sellando el fatal desenlace de su linaje.)",
+                correct: "Tragedia"
+            },
+            {
+                content: "(Un jardín iluminado. DON GUMERSINDO, anciano y tacaño, cuenta monedas frenéticamente mientras abraza una bolsa de cuero. IRINA, la sirvienta, lo observa con burla.)\nIRINA\n(Aparte, al público)\n¡Ved al amo! Tan avaro que al sol le regatea\nel oro que gasta al nacer cada día.\nSi el amor le costara un real, juraría,\nmorir soltero y solo, y que la luna lo vea.\nDON GUMERSINDO\n(Súbitamente)\n¡Irina! ¡Vagabunda! ¿Por qué estás tan quieta?\n¿Acaso el aire gratis te parece un regalo?\n¡Debes hacer algo útil! ¡Limpia el establo!\nY cuidado, ¡que no rompas ni una sola maceta!\nIRINA\n(Haciendo una exagerada reverencia)\nComo ordenéis, mi señor, flor de la economía.\n(Se aleja guiñando un ojo al público. DON GUMERSINDO vuelve a contar, feliz, y choca accidentalmente con un jarrón, que milagrosamente no cae.)\nDON GUMERSINDO\n(Aliviado)\n¡Un milagro! Hoy el cielo ha ahorrado mi agonía.\n(Sonríe satisfecho. Se escucha una risa generalizada antes del cierre.)",
+                correct: "Comedia"
+            },
+            {
+                content: "(Una plaza de pueblo al amanecer. JACINTA, una joven campesina, llora desconsoladamente. MARTÍN, un muchacho risueño, se acerca con un ramo de flores marchitas.)\nMARTÍN\nJacinta, ¿lloras otra vez por el buey que perdiste?\nTu pena es tan grande que ahoga al almendro.\nPero mira, el sol ya asoma, el invierno ya es cendro,\ny hasta en la miseria, el alba siempre persiste.\nJACINTA\n(Llorando, pero con un atisbo de sonrisa)\nNo me hables de sol cuando la soga me aprieta.\nMi padre debe cien reales; iremos a la cárcel.\n¿De qué sirve el sol si el futuro es tan cárcel?\nTus flores marchitas no llenan la cesta.\nMARTÍN\n¡Pues robaremos una cabra a Don Anselmo!\n(Le guiña el ojo, y luego se pone serio.)\nNo llores. Hallaremos un modo. La vida es así:\nun poco de llanto por lo que se va de ti,\ny un mucho de risa por el nuevo dilema.\n(JACINTA suelta una carcajada breve antes de volver a suspirar. MARTÍN le toma la mano con seriedad. La escena mezcla desesperación y esperanza.)",
+                correct: "Drama"
+            },
+            {
+                content: "(Interior de una iglesia. La escena es alegórica y solemne. El personaje de LA FE, vestido de blanco, habla a EL PECADO, atado con cadenas.)\nLA FE\n¡Detente, Pecado! Tu alegoría se acaba.\nTu sombra es muy larga, mas la luz más fuerte.\nEl Santo Sacramento ha vencido a la muerte,\ny la Hostia es la llave que al Cielo destraba.\nEL PECADO\n(Con voz cavernosa)\n¡Mi reino es la duda, la lujuria y la prisa!\nEl hombre me busca entre el oro y el vicio.\nLA FE\n(Levantando un cáliz de utilería)\nMas el Pan de Vida rompe tu maleficio.\nLa Gracia es un don que el alma divisa.\n(LA FE toca a EL PECADO con el cáliz. El Pecado grita, las cadenas se rompen y desaparece. Un coro canta himnos de gloria religiosa.)",
+                correct: "Auto Sacramental"
+            },
+            {
+                content: "(Escenario vacío. Se han retirado los muebles del acto anterior de la obra principal. BARTOLO, un criado regordete, y MARIJA, la criada, se esconden detrás del telón, hablando en voz baja y con lenguaje vulgar.)\nBARTOLO\n¡Silencio, Marija! Que nos oye el Marqués.\nTanto drama y tanto verso nos dejan sin cena.\nMARIJA\n(Sacando un chorizo de su bolsillo)\nYo, en mi cómica astucia, guardé este chorizo.\nAnda, ábreme el vino, que el amo es un lince,\ny pronto querrá ver más sangre y más trance.\nBARTOLO\n(Bebe de una bota de vino y eructa ruidosamente)\nEl amor es tragedia para el que ayuna.\n¡Y el Marqués suspira por la duquesa de Luna!\n(Se sientan en el suelo, devorando el chorizo y bebiendo, riendo sin control por la situación ridícula. La escena es corta y burlesca.)",
+                correct: "Entremés"
+            },
+            {
+                content: "La verdadera libertad del individuo no reside en la ausencia de límites, sino en la consciencia plena de aquellos que decide aceptar. Argumentar que la sociedad coarta el espíritu es una simplificación cómoda; más bien, lo moldea y lo pone a prueba. Me atrevería a afirmar que el gran dilema de nuestra era es la saturación informativa, que, paradójicamente, nos vuelve perezosos. En lugar de procesar los datos para forjar una idea propia, preferimos adoptar la primera opinión ya masticada que encontramos en la red. Esta reflexión personal nos lleva a un punto crucial: la educación debe dejar de ser una acumulación de hechos y convertirse en una disciplina de la duda. Solo así podremos distinguir el murmullo de la multitud de la auténtica voz del pensamiento.",
+                correct: "Ensayo"
+            },
+            {
+                content: "Nació en una aldea de arcilla roja donde los libros eran un lujo y la educación una quimera. El 12 de julio de 1888, la partera anotó su llegada en un viejo cuaderno parroquial: \"Albañil, de nombre Eloy\". Su infancia, marcada por el sonido del martillo y la cal viva, no presagió la mente que se forjaría. A los diecisiete años, sin saber leer, se fugó a la capital. Allí, en los turnos de noche como sereno de la biblioteca pública, se produjo la epifanía. Aprendió a descifrar los símbolos impresos a la luz de una vela robada. Su vida, a partir de ese instante, se convirtió en una narración de ascenso: del analfabetismo a la cátedra de Filología Antigua, demostrando que la sed de conocimiento es el más grande motor humano.",
+                correct: "Biografía"
+            },
+            {
+                content: "Mi estimado Lucio:\nTe escribo esta misiva no con la urgencia del mensajero, sino con la pausada intención del mentor. Tu reciente consulta sobre la naturaleza del éxito me ha hecho reflexionar. No lo busques en los aplausos fáciles o en el brillo efímero de las riquezas. El verdadero triunfo, aquel que perdura más allá del tiempo, es la integridad innegociable.\nRecuerda siempre esto: la erudición solo es una herramienta; la sabiduría es el arte de usarla con justicia. Que tus pasos sean firmes y tu carácter, impoluto.\nTu maestro, que te observa desde la distancia.",
+                correct: "Epístola"
+            }
+        ];
+
+        const options = ["Novela", "Cuento", "Fábula", "Leyenda", "Mito", "Epopeya", "Cantar de Gesta", "Canción", "Oda", "Elegía", "Sátira", "Égloga", "Soneto", "Tragedia", "Comedia", "Drama", "Auto Sacramental", "Entremés", "Ensayo", "Biografía", "Epístola"];
+        
+        let currentPhase = 0;
+        let score = 0;
+        let gameTexts = [];
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function newGame() {
+            currentPhase = 0;
+            score = 0;
+            gameTexts = shuffleArray(texts);
+            updateScore();
+            hideMessage();
+            hideExplanation();
+            loadPhase();
+        }
+
+        function loadPhase() {
+            if (currentPhase >= gameTexts.length) {
+                showMessage("🎉 ¡Felicidades! Has completado todas las fases. ¡Eres un verdadero experto en literatura!", "success");
+                document.getElementById('nextBtn').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('currentPhase').textContent = currentPhase + 1;
+            document.getElementById('totalPhases').textContent = gameTexts.length;
+            document.getElementById('textContent').innerHTML = gameTexts[currentPhase].content.replace(/\n/g, '<br>');
+            
+            // Seleccionar 5 opciones aleatorias, incluyendo siempre la respuesta correcta
+            const correctAnswer = gameTexts[currentPhase].correct;
+            const incorrectOptions = options.filter(option => option !== correctAnswer);
+            const shuffledIncorrect = shuffleArray(incorrectOptions);
+            const selectedOptions = [correctAnswer, ...shuffledIncorrect.slice(0, 4)];
+            const finalOptions = shuffleArray(selectedOptions);
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            finalOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(button);
+            });
+            
+            document.getElementById('nextBtn').style.display = 'none';
+            hideMessage();
+            hideExplanation();
+        }
+
+        function checkAnswer(selectedOption) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            const correctAnswer = gameTexts[currentPhase].correct;
+            
+            if (selectedOption === correctAnswer) {
+                score++;
+                updateScore();
+                showMessage("¡Enhorabuena! Eres un genio literario. Continúa para ver si la suerte te acompaña en la próxima...", "success");
+                showExplanation(correctAnswer);
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            } else {
+                score--;
+                updateScore();
+                showMessage("¡Error! Te has equivocado. Vuelve a estudiarte los subgéneros del libro antes de jugar otra partida.", "error");
+                setTimeout(() => {
+                    newGame();
+                }, 3000);
+            }
+        }
+
+        function nextPhase() {
+            currentPhase++;
+            loadPhase();
+        }
+
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message ${type}`;
+            messageEl.style.display = 'block';
+        }
+
+        function hideMessage() {
+            document.getElementById('message').style.display = 'none';
+        }
+
+        function showExplanation(genre) {
+            const explanationEl = document.getElementById('explanationBox');
+            const contentEl = document.getElementById('explanationContent');
+            contentEl.textContent = genreExplanations[genre];
+            explanationEl.style.display = 'block';
+        }
+
+        function hideExplanation() {
+            document.getElementById('explanationBox').style.display = 'none';
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        // Iniciar el juego
+        newGame();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985c3e4d90e8cc4f',t:'MTc1ODk4OTEzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: medium; visibility: hidden;"></iframe>
+
+
+</body></html>
